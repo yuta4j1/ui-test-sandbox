@@ -1,13 +1,8 @@
 import React from 'react'
-import UserNameForm from './components/Form'
+import Routing from './Routing'
 
 const App: React.FC<{}> = ({}) => {
-  return (
-    <div>
-      <h2>Hello, React</h2>
-      <UserNameForm />
-    </div>
-  )
+  return <Routing />
 }
 
 export default App
