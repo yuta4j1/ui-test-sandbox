@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import * as dayjs from 'dayjs'
 
 const UserNameForm = () => {
   const {
@@ -12,6 +13,7 @@ const UserNameForm = () => {
     defaultValues: {
       firstName: '',
       lastName: '',
+      dateTime: '',
     },
     mode: 'all',
   })
@@ -20,8 +22,8 @@ const UserNameForm = () => {
     <main>
       <section>
         <form
-          onSubmit={handleSubmit(() => {
-            console.log('submit')
+          onSubmit={handleSubmit(data => {
+            console.log(data)
           })}
         >
           <h1>フォーム入力</h1>
@@ -55,6 +57,26 @@ const UserNameForm = () => {
               <p role="alert">lastNameは7文字以下で入力してください。</p>
             )}
           </div>
+          <div>
+            <label htmlFor="adate">Date</label>
+            <input
+              type="date"
+              id="adate"
+              {...register('dateTime', {
+                validate: {
+                  pastDate: value => {
+                    const v = dayjs(value)
+                    const currDate = dayjs()
+                    return currDate.diff(v) < 0
+                  },
+                },
+              })}
+            />
+            {errors.dateTime?.type === 'pastDate' && (
+              <p role="alert">過去日付は選択できません</p>
+            )}
+          </div>
+
           <button
             onClick={() => {
               // triggerでもフォームエラー要素にフォーカス当たる？？ -> 当たる

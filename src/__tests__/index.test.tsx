@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import UserNameForm from '../components/Form'
 import '@testing-library/jest-dom'
@@ -64,9 +64,25 @@ describe('<UserNameForm /> テスト', () => {
   test('要素が複数エラーになった際、先頭の要素にフォーカスが当たっていること', async () => {
     render(<UserNameForm />)
     // 何も入力せず、「確定」ボタンをクリック
-    const submitButton = screen.getByText('確定する')
-    await userEvent.click(submitButton)
+    await userEvent.click(screen.getByText('確定する'))
     const activeElm = document.activeElement
     expect(activeElm).toBe(screen.getByLabelText('FirstName'))
+  })
+
+  test('日付項目に過去日付を入力するとエラーメッセージが表示される', async () => {
+    const OriginalDate = Date
+    const dateToUse = new Date('2023-01-01')
+    jest.spyOn(globalThis, 'Date').mockImplementation(arg => {
+      return arg ? new OriginalDate(arg) : dateToUse
+    })
+    render(<UserNameForm />)
+    // 入力項目に任意の値を入力し、エラーメッセージを抑制する
+    await userEvent.type(screen.getByLabelText('FirstName'), 'aaa')
+    await userEvent.type(screen.getByLabelText('LastName'), 'bbb')
+    await userEvent.type(screen.getByLabelText('Date'), '2021-06-21')
+    await userEvent.click(screen.getByText('確定する'))
+    console.log(screen.getByLabelText('Date').innerHTML)
+    const alertElms = await screen.findAllByRole('alert')
+    expect(alertElms[0]).toHaveTextContent('過去日付は選択できません')
   })
 })

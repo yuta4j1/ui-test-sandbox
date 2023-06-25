@@ -15,5 +15,8 @@ module.exports = {
       },
     ],
   },
+  collectCoverage: true,
+  // The directory where Jest should output its coverage files
+  coverageDirectory: "./coverage",
   modulePathIgnorePatterns: ['<rootDir>/src/__tests__/test-utils.tsx'],
 }
