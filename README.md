@@ -1,3 +1,3 @@
-# react-vite-template
+# ui-test-sandbox
 
-vitejs で React のプロジェクトを作る際のテンプレート
+React + Jest + React Testing Library で React コンポーネントのUIテストについて学ぶ
