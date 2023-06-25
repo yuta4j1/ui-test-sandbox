@@ -1,33 +1,71 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const UserNameForm = () => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const {
+    register,
+    trigger,
+    formState: { errors, dirtyFields },
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+    },
+    mode: 'all',
+  })
 
   return (
     <main>
       <section>
-        <h1>フォーム入力</h1>
-        <div>
-          <label htmlFor="firstname">FirstName</label>
-          <input
-            type="text"
-            id="firstname"
-            value={firstName}
-            onChange={e => setFirstName(e.currentTarget.value)}
-            aria-required
-          />
-        </div>
-        <div>
-          <label htmlFor="lastname">LastName</label>
-          <input
-            type="text"
-            id="lastname"
-            value={lastName}
-            onChange={e => setLastName(e.currentTarget.value)}
-            aria-required
-          />
-        </div>
+        <form
+          onSubmit={handleSubmit(() => {
+            console.log('submit')
+          })}
+        >
+          <h1>フォーム入力</h1>
+          <div>
+            <label htmlFor="firstname">FirstName</label>
+            <input
+              type="text"
+              id="firstname"
+              aria-required
+              {...register('firstName', { required: true, maxLength: 5 })}
+            />
+            {errors.firstName?.type === 'required' && (
+              <p role="alert">firstNameは必須入力です。</p>
+            )}
+            {errors.firstName?.type === 'maxLength' && (
+              <p role="alert">firstNameは5文字以下で入力してください。</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="lastname">LastName</label>
+            <input
+              type="text"
+              id="lastname"
+              aria-required
+              {...register('lastName', { required: true, maxLength: 7 })}
+            />
+            {errors.lastName?.type === 'required' && (
+              <p role="alert">lastNameは必須入力です。</p>
+            )}
+            {errors.lastName?.type === 'maxLength' && (
+              <p role="alert">lastNameは7文字以下で入力してください。</p>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              // triggerでもフォームエラー要素にフォーカス当たる？？ -> 当たる
+              trigger('firstName')
+              trigger('lastName')
+            }}
+          >
+            バリデーショントリガー
+          </button>
+          <input type="submit" value="確定する" />
+        </form>
         <button>次の画面へ</button>
       </section>
       <section>

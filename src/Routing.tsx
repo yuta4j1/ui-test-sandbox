@@ -1,6 +1,7 @@
 import { Router, ReactLocation, Link, Outlet } from '@tanstack/react-location'
 import UserNameForm from './components/Form'
 import ModalPage from './components/ModalPage'
+import SelectorPage from './components/SelectorPage'
 
 const location = new ReactLocation()
 
@@ -11,6 +12,7 @@ const Routing = () => {
       routes={[
         { path: '/', element: <UserNameForm /> },
         { path: '/modal', element: <ModalPage /> },
+        { path: '/selector', element: <SelectorPage /> },
       ]}
     >
       <header>
@@ -19,6 +21,9 @@ const Routing = () => {
         </Link>
         <Link to="/modal" activeOptions={{ exact: true }}>
           Modal
+        </Link>
+        <Link to="/selector" activeOptions={{ exact: true }}>
+          Selector
         </Link>
       </header>
       <hr />

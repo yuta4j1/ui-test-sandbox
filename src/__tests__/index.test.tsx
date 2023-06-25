@@ -1,13 +1,16 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, act, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import UserNameForm from '../components/Form'
 import '@testing-library/jest-dom'
 
-test('全ての要素が空', async () => {
-  render(<UserNameForm />)
-  const inputFirstName = screen.getByLabelText('FirstName')
-  fireEvent.change(inputFirstName, { target: { value: 'hogehoge' } })
-  const submitButton = screen.getByText('次の画面へ')
-  // 「次の画面へ」ボタンをクリック
-  fireEvent.click(submitButton)
-  // expect(screen.getByRole('alert')).toBeFalsy()
+test('FirstNameが空', async () => {
+  await act(async () => {
+    render(<UserNameForm />)
+  })
+  const submitButton = screen.getByText('確定する')
+  // 「確定」ボタンをクリック
+
+  userEvent.click(submitButton)
+  const alertElms = await screen.findAllByRole('alert')
+  expect(alertElms[0]).toHaveTextContent('firstNameは必須入力です。')
 })
