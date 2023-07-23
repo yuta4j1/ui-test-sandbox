@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import UserNameForm from '../components/Form'
 import '@testing-library/jest-dom'
+import 'jest-date-mock';
+import { advanceTo } from 'jest-date-mock';
 
 describe('<UserNameForm /> テスト', () => {
   test('FirstNameが空', async () => {
@@ -70,16 +72,18 @@ describe('<UserNameForm /> テスト', () => {
   })
 
   test('日付項目に過去日付を入力するとエラーメッセージが表示される', async () => {
-    const OriginalDate = Date
-    const dateToUse = new Date('2023-01-01')
-    jest.spyOn(globalThis, 'Date').mockImplementation(arg => {
-      return arg ? new OriginalDate(arg) : dateToUse
-    })
+    // const _Date = Date
+    // const dateToUse = new Date('2023-01-01')
+    // jest.spyOn(globalThis, 'Date').mockImplementation(arg => {
+    //   return arg ? new _Date(arg) : dateToUse
+    // })
+    advanceTo(new Date("2023/01/01"));
+
     render(<UserNameForm />)
     // 入力項目に任意の値を入力し、エラーメッセージを抑制する
     await userEvent.type(screen.getByLabelText('FirstName'), 'aaa')
     await userEvent.type(screen.getByLabelText('LastName'), 'bbb')
-    await userEvent.type(screen.getByLabelText('Date'), '2021-06-21')
+    await userEvent.type(screen.getByLabelText('Date'), '2022-12-31')
     await userEvent.click(screen.getByText('確定する'))
     console.log(screen.getByLabelText('Date').innerHTML)
     const alertElms = await screen.findAllByRole('alert')
