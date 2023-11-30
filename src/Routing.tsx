@@ -7,6 +7,7 @@ import FileUploadPage from './components/FileUploadPage'
 import Fetcher from './components/Fetcher'
 import GridPage from './components/grid'
 import AnimationPage from './components/animation'
+import DragAndDropPage from './components/dd'
 
 const location = new ReactLocation()
 
@@ -28,6 +29,7 @@ const Routing = () => {
         { path: '/data_fetch', element: <Fetcher /> },
         { path: '/grid', element: <GridPage /> },
         { path: '/animation', element: <AnimationPage /> },
+        { path: '/dd', element: <DragAndDropPage /> },
       ]}
     >
       <Header>
@@ -51,6 +53,9 @@ const Routing = () => {
         </Link>
         <Link to="/animation" activeOptions={{ exact: true }}>
           Animation
+        </Link>
+        <Link to="/dd" activeOptions={{ exact: true }}>
+          Drag&Drop
         </Link>
       </Header>
       <hr />
