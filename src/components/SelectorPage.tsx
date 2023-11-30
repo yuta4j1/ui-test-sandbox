@@ -40,6 +40,50 @@ const SelectorOptionStyle = styled.li<{ selected: boolean }>`
   cursor: pointer;
 `
 
+const AccessibleSelectorContainer = styled.div`
+  margin-top: 5rem;
+  padding: 3rem;
+`
+
+const OptionsBox = styled.div`
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  curor: pointer;
+`
+
+const ListItem = styled.li<{ $selected?: boolean }>`
+  padding: 8px 2rem;
+  border-radius: 4px;
+  list-style: none;
+  cursor: pointer;
+  background: ${props => (props.$selected ? '#90bbd1' : '#fff')};
+  color: ${props => (props.$selected ? '#fff' : '#000')};
+`
+
+const dataOptions: SelectOption[] = [
+  {
+    id: 'aaa',
+    value: 'abcdefghij',
+  },
+  {
+    id: 'bbb',
+    value: 'sdjf;oasfao;d',
+  },
+  {
+    id: 'ccc',
+    value: 'xhuoidjfkx',
+  },
+  {
+    id: 'ddd',
+    value: 'yraewulfsnf',
+  },
+  {
+    id: 'eee',
+    value: 'kkkyudfoadsffa',
+  },
+]
+
 type SelectOption = {
   id: string
   value: string
@@ -63,6 +107,9 @@ const options: SelectOption[] = [
 const SelectorPage: React.FC<{}> = ({}) => {
   const [selected, setSelected] = useState<SelectOption | null>(null)
   const [isOptionOpen, toggleOptionOpen] = useState(false)
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const optionBoxRef = useRef<HTMLDivElement | null>(null)
+
   return (
     <main>
       <h2>Selector Sandbox</h2>
@@ -96,6 +143,71 @@ const SelectorPage: React.FC<{}> = ({}) => {
           <option key={v.id}>{v.value}</option>
         ))}
       </select>
+      <AccessibleSelectorContainer
+        onClick={() => optionBoxRef.current?.focus()}
+      >
+        <OptionsBox
+          ref={optionBoxRef}
+          tabIndex={0}
+          onKeyDown={e => {
+            if (e.key === 'ArrowDown') {
+              for (const value of dataOptions.entries()) {
+                if (value[1].id === selectedOptions[0]) {
+                  if (value[0] === dataOptions.length - 1) {
+                    setSelectedOptions([dataOptions[0].id])
+                  } else {
+                    setSelectedOptions([dataOptions[value[0] + 1].id])
+                  }
+                  break
+                }
+              }
+            }
+            if (e.key === 'ArrowUp') {
+              for (const value of dataOptions.entries()) {
+                if (value[1].id === selectedOptions[0]) {
+                  if (value[0] === 0) {
+                    setSelectedOptions([dataOptions[dataOptions.length - 1].id])
+                  } else {
+                    setSelectedOptions([dataOptions[value[0] - 1].id])
+                  }
+                  break
+                }
+              }
+            }
+          }}
+        >
+          <ul role="option">
+            {dataOptions.map(v => (
+              <ListItem
+                key={v.id}
+                role="presentation"
+                onClick={e => {
+                  e.preventDefault()
+                  optionBoxRef.current?.focus()
+                  if (selectedOptions.includes(v.id)) {
+                    setSelectedOptions(
+                      selectedOptions.filter(vv => vv !== v.id)
+                    )
+                  } else {
+                    // shift key
+                    // setSelectedOptions([...selectedOptions, v.id])
+                    if (e.metaKey && !e.ctrlKey) {
+                      console.log('control')
+                      setSelectedOptions([...selectedOptions, v.id])
+                    } else {
+                      setSelectedOptions([v.id])
+                    }
+                  }
+                }}
+                $selected={selectedOptions.includes(v.id)}
+                aria-selected={selectedOptions.includes(v.id)}
+              >
+                {v.value}
+              </ListItem>
+            ))}
+          </ul>
+        </OptionsBox>
+      </AccessibleSelectorContainer>
     </main>
   )
 }

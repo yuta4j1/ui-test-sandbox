@@ -1,9 +1,12 @@
 import { Router, ReactLocation, Link, Outlet } from '@tanstack/react-location'
+import styled from 'styled-components'
 import UserNameForm from './components/Form'
 import ModalPage from './components/ModalPage'
 import SelectorPage from './components/SelectorPage'
 import FileUploadPage from './components/FileUploadPage'
-import styled from 'styled-components'
+import Fetcher from './components/Fetcher'
+import GridPage from './components/grid'
+import AnimationPage from './components/animation'
 
 const location = new ReactLocation()
 
@@ -22,6 +25,9 @@ const Routing = () => {
         { path: '/modal', element: <ModalPage /> },
         { path: '/selector', element: <SelectorPage /> },
         { path: '/file', element: <FileUploadPage /> },
+        { path: '/data_fetch', element: <Fetcher /> },
+        { path: '/grid', element: <GridPage /> },
+        { path: '/animation', element: <AnimationPage /> },
       ]}
     >
       <Header>
@@ -37,9 +43,18 @@ const Routing = () => {
         <Link to="/file" activeOptions={{ exact: true }}>
           file
         </Link>
+        <Link to="/data_fetch" activeOptions={{ exact: true }}>
+          Fetcher
+        </Link>
+        <Link to="/grid" activeOptions={{ exact: true }}>
+          Grid
+        </Link>
+        <Link to="/animation" activeOptions={{ exact: true }}>
+          Animation
+        </Link>
       </Header>
       <hr />
-      <Outlet /> {/* Start rendering router matches */}
+      <Outlet />
     </Router>
   )
 }

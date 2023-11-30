@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import MyModal from './modal'
 import Modal from 'react-modal'
+import { DialogElement as DialogModal} from './modal/DialogElement'
 
 // Modal.setAppElement('#root')
 
@@ -28,6 +29,7 @@ const ModalPage = () => {
         </button>
         <p>{btnStatus ? '活性' : '非活性'}</p>
       </div>
+      <DialogModal />
     </main>
   )
 }

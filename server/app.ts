@@ -30,7 +30,7 @@ fastify.post('/api/file', async function handler(request, reply) {
   try {
     const writeStream = fs.createWriteStream('hoge.jpg')
     for await (const v of files) {
-      console.log(" file type: ", v.type)
+      console.log(' file type: ', v.type)
       const buffer = await v.toBuffer()
       for (let curr = 0; curr < buffer.length; curr += FILE_CHUNK_SIZE) {
         writeStream.write(
@@ -45,10 +45,7 @@ fastify.post('/api/file', async function handler(request, reply) {
       }
     }
     writeStream.end()
-
-  } catch (err) {
-
-  }
+  } catch (err) {}
 
   try {
     // const buffer = await file.toBuffer()
@@ -64,12 +61,17 @@ fastify.post('/api/file', async function handler(request, reply) {
     //     }
     //   )
     // }
-    
   } catch (err) {
     console.log('error!')
     // fileSize limit reached!
   }
   return { result: 'success' }
+})
+
+fastify.get('/api/hello', {
+  handler(request, reply) {
+    reply.send({ result: 'hello' })
+  },
 })
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8080

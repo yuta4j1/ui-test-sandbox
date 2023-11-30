@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import UserNameForm from '../components/Form'
 import '@testing-library/jest-dom'
-import 'jest-date-mock';
-import { advanceTo } from 'jest-date-mock';
+import 'jest-date-mock'
+import { advanceTo } from 'jest-date-mock'
 
 describe('<UserNameForm /> テスト', () => {
   test('FirstNameが空', async () => {
@@ -29,7 +29,7 @@ describe('<UserNameForm /> テスト', () => {
   test('FirstNameに5文字の全角文字を入力し、エラーメッセージが表示されない', async () => {
     render(<UserNameForm />)
     const firstNameInput = screen.getByLabelText('FirstName')
-    userEvent.type(firstNameInput, 'あいうえお')
+    userEvent.type(firstNameInput, 'あ'.repeat(5))
     const submitButton = screen.getByText('確定する')
     // 「確定」ボタンをクリック
     userEvent.click(submitButton)
@@ -40,7 +40,7 @@ describe('<UserNameForm /> テスト', () => {
   test('FirstNameに6文字入力し、エラーメッセージが表示される', async () => {
     render(<UserNameForm />)
     const firstNameInput = screen.getByLabelText('FirstName')
-    await userEvent.type(firstNameInput, 'bbbbbb')
+    await userEvent.type(firstNameInput, 'a'.repeat(6))
     const submitButton = screen.getByText('確定する')
     // 「確定」ボタンをクリック
     userEvent.click(submitButton)
@@ -53,7 +53,7 @@ describe('<UserNameForm /> テスト', () => {
   test('FirstNameに6文字の全角文字を入力し、エラーメッセージが表示される', async () => {
     render(<UserNameForm />)
     const firstNameInput = screen.getByLabelText('FirstName')
-    await userEvent.type(firstNameInput, 'ウカムルバス')
+    await userEvent.type(firstNameInput, 'あ'.repeat(6))
     const submitButton = screen.getByText('確定する')
     // 「確定」ボタンをクリック
     userEvent.click(submitButton)
@@ -77,7 +77,7 @@ describe('<UserNameForm /> テスト', () => {
     // jest.spyOn(globalThis, 'Date').mockImplementation(arg => {
     //   return arg ? new _Date(arg) : dateToUse
     // })
-    advanceTo(new Date("2023/01/01"));
+    advanceTo(new Date('2023/01/01'))
 
     render(<UserNameForm />)
     // 入力項目に任意の値を入力し、エラーメッセージを抑制する

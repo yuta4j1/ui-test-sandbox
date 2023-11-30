@@ -2,6 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import * as dayjs from 'dayjs'
+import { Checkbox } from './Checkbox'
 
 const UserNameForm = () => {
   const {
@@ -21,12 +22,12 @@ const UserNameForm = () => {
   return (
     <main>
       <section>
+        <h1>フォーム入力</h1>
         <form
           onSubmit={handleSubmit(data => {
             console.log(data)
           })}
         >
-          <h1>フォーム入力</h1>
           <div>
             <label htmlFor="firstname">FirstName</label>
             <input
@@ -75,6 +76,21 @@ const UserNameForm = () => {
             {errors.dateTime?.type === 'pastDate' && (
               <p role="alert">過去日付は選択できません</p>
             )}
+          </div>
+          <div>
+            <label htmlFor="slider">スライダー</label>
+            <input
+              id="slider"
+              type="range"
+              min="1"
+              max="10"
+              aria-valuemin={1}
+              aria-valuemax={10}
+            />
+          </div>
+          <div>
+            <label htmlFor="check">チェックボックスのスタイル</label>
+            <Checkbox id="check" />
           </div>
 
           <button
